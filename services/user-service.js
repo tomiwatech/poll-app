@@ -2,66 +2,73 @@ var User = require('../model/user-model').User;
 
 var UserService = {};
 
-UserService.findTask = function(user_id, next){
+UserService.authenticateUser = function(data, next){
+    User.findOne({username: data.username}, function(err, user){
+        return next(err, user);
+    });
+}
+
+UserService.findUser = function(user_id, next){
 
     User.findOne({_id : user_id}, function(err, user){
         return next(err, user);
     });
 }
 
-UserService.addTask = function(data, next){
-    
-    this.findTask(data._id, function(err, user){
+UserService.addUser = function(data, next){
+
+    this.findUser(data._id, function(err, user){
         if(err){
-            console.log('Encountered error when searching if the task is in the db already');
+            console.log('Encountered error when searching if the user is in the db already');
             return next(err, null);
         }
 
         if(user){
-            console.log('User with taskName ' + task.taskName + ' exists already.');
+            console.log('user already exists');
             return next(null, null);
         }
         else{
             /*Add user to db*/
-            var newTask = new Task({
-                taskName: data.taskName,
-                taskDescription: data.taskDescription,
-                taskPriority: data.taskPriority,
-                taskStatus : data.taskStatus
+            var newUser = new User({
+                username: data.username,
+                password: data.password,
+                fullname: data.fullname,
+                phone : data.phone,
+                email: data.email
             });
 
-            newTask.save(function(err, task){
-                return next(err, task);
+            newUser.save(function(err, user){
+                return next(err, user);
             })
         }
     })
 }
 
-UserService.allTasks = function(next){
+UserService.allUsers = function(next){
     User.find(function(err, users){
         return next(err, users);
     });
 }
 
-UserService.updateTask = function(usertask, next){
+UserService.updateUser = function(userUser, next){
 
-    Task.update({"_id" : usertask._id}, {$set :
-     {
-        "taskName" : usertask.taskName,
-        "taskPriority": usertask.taskPriority,
-        "taskStatus": usertask.taskStatus,
-        "taskDescription": usertask.taskDescription
-    } 
-       }, function(err, task){
-        return next(err, task);
+    User.update({"_id" : userUser._id}, {$set :
+        {
+            "UserName" : userUser.UserName,
+            "UserPriority": userUser.UserPriority,
+            "UserStatus": userUser.UserStatus,
+            "UserDescription": userUser.UserDescription
+        }
+    }, function(err, User){
+        return next(err, User);
     })
 }
 
 
-// delete task with task._id
-UserService.deleteTask = function (id, next) {
+// delete User with User._id
+UserService.deleteUser = function (id, next) {
 
-    Task.remove({"_id" : id}, function (err) {
+    User.remove({"_id" : id}, function (err) {
         return next(err);
     });
 }

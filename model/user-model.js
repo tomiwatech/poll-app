@@ -3,12 +3,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var pollUserSchema = new Schema({
-        firstname : String,
-        lastname: String,
+        username : String,
         password : String,
         email : String,
-        gender: String,
-        phone: Number
+        fullname: String,
+        phone: String
     },
     {
         timestamps : {createdAt : 'created', updatedAt : 'updated'}

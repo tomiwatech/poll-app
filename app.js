@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var jwt = require('jsonwebtoken');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -14,7 +15,6 @@ var config = require('./config');
 var promise = mongoose.connect(config.uri, {useMongoClient: true},function(err){
 	  if(err){
         console.log('Could not connect to mongo db');
-        console.log(err);
     }
     else {
         console.log('Successfully connected to mongo db');
@@ -25,6 +25,7 @@ var promise = mongoose.connect(config.uri, {useMongoClient: true},function(err){
 var app = express();
 
 // view engine setup
+app.set('superSecret', config.secret); 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 

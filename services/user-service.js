@@ -2,64 +2,65 @@ var User = require('../model/user-model').User;
 
 var UserService = {};
 
-UserService.authenticateUser = function(data, next){
-    User.findOne({username: data.username}, function(err, user){
+UserService.authenticateUser = function (data, next) {
+    User.findOne({ username: data.username }, function (err, user) {
         return next(err, user);
     });
 }
 
-UserService.findUser = function(user_id, next){
+UserService.findUser = function (username, next) {
 
-    User.findOne({_id : user_id}, function(err, user){
+    User.findOne({ username: username }, function (err, user) {
         return next(err, user);
     });
 }
 
-UserService.addUser = function(data, next){
+UserService.addUser = function (data, next) {
 
-    this.findUser(data._id, function(err, user){
-        if(err){
+    this.findUser(data.username, function (err, user) {
+        if (err) {
             console.log('Encountered error when searching if the user is in the db already');
             return next(err, null);
         }
 
-        if(user){
+        if (user) {
             console.log('user already exists');
             return next(null, null);
         }
-        else{
+        else {
             /*Add user to db*/
             var newUser = new User({
                 username: data.username,
                 password: data.password,
                 fullname: data.fullname,
-                phone : data.phone,
+                phone: data.phone,
                 email: data.email
             });
 
-            newUser.save(function(err, user){
+            newUser.save(function (err, user) {
                 return next(err, user);
             })
         }
     })
 }
 
-UserService.allUsers = function(next){
-    User.find(function(err, users){
+UserService.allUsers = function (next) {
+    User.find(function (err, users) {
         return next(err, users);
     });
 }
 
-UserService.updateUser = function(userUser, next){
+UserService.updateUser = function (userUser, next) {
 
-    User.update({"_id" : userUser._id}, {$set :
+    User.update({ "_id": userUser._id }, {
+        $set:
         {
-            "UserName" : userUser.UserName,
+            "UserName": userUser.UserName,
             "UserPriority": userUser.UserPriority,
             "UserStatus": userUser.UserStatus,
             "UserDescription": userUser.UserDescription
         }
-    }, function(err, User){
+    }, function (err, User) {
         return next(err, User);
     })
 }
@@ -68,7 +69,7 @@ UserService.updateUser = function(userUser, next){
 // delete User with User._id
 UserService.deleteUser = function (id, next) {
 
-    User.remove({"_id" : id}, function (err) {
+    User.remove({ "_id": id }, function (err) {
         return next(err);
     });
 }

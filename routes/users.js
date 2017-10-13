@@ -5,6 +5,12 @@ var jwt = require('jsonwebtoken');
 var app = express();
 var config = require('../config');
 var User = require('../model/user-model').User;
+
+//
+// ---------------------------------------------------------
+// SET SECRET for Jwt
+// ---------------------------------------------------------
+// 
 app.set('superSecret', config.secret);
 
 

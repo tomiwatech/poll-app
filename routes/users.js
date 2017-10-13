@@ -77,8 +77,8 @@ router.post('/authenticate', function (req, res, next) {
 
                 // return the information including token as JSON
                 res.json({
-                    success: true,
-                    message: 'Enjoy your token!',
+                    responseCode: "00",
+                    responseMessage: 'Authentication Successful',
                     token: token
                 });
             }

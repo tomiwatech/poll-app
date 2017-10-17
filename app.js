@@ -25,6 +25,7 @@ var promise = mongoose.connect(config.uri, {useMongoClient: true},function(err){
 
 var app = express();
 
+// Use the cors module before the routes
 app.use(cors());
 
 // view engine setup

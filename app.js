@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var cors = require('cors');
 var jwt = require('jsonwebtoken');
 
 var index = require('./routes/index');
@@ -23,6 +24,8 @@ var promise = mongoose.connect(config.uri, {useMongoClient: true},function(err){
 
 
 var app = express();
+
+app.use(cors());
 
 // view engine setup
 app.set('superSecret', config.secret); 

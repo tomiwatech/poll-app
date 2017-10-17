@@ -16,6 +16,19 @@ app.set('superSecret', config.secret);
 
 //
 // ---------------------------------------------------------
+// Enable Cors
+// ---------------------------------------------------------
+// 
+
+router.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
+
+//
+// ---------------------------------------------------------
 // Add a new new user
 // ---------------------------------------------------------
 // 
@@ -58,15 +71,15 @@ router.post('/authenticate', function (req, res, next) {
         if (err) throw err;
         if (!user) {
             res.json({
-                success: false,
-                message: 'Authentication failed. User not found.'
+                responseCode: "02",
+                responseMessage: 'Authentication failed. User not found.',
             });
         } else if (user) {
             // check if username matches
             if (user.password != req.body.password) {
                 res.json({
-                    success: false,
-                    message: 'Authentication failed. Wrong password.'
+                    responseCode: "03",
+                    responseMessage: 'Authentication failed. Password not found.',
                 });
             } else {
                 // if user is found and password is right

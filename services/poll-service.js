@@ -8,9 +8,9 @@ PollService.authenticatePoll = function (data, next) {
     });
 }
 
-PollService.findPoll = function (question, next) {
+PollService.findPoll = function (id, next) {
 
-    Poll.findOne({ question: question }, function (err, poll) {
+    Poll.findOne({ _id: id }, function (err, poll) {
         return next(err, poll);
     });
 }

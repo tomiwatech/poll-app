@@ -175,27 +175,25 @@ router.get('/', function (req, res, next) {
 router.get('/:id', function (req, res, next) {
     var id = req.params.id;
     console.log(id);
-    PollService.findUser(id, function (err, users) {
-        if (err) {
+    PollService.findPoll(id, function (err, poll) {
+        if (err){
             return res.json({
                 'responseCode': '03',
-                'responseMessage': 'Error fetching user'
+                'responseMessage': 'Error fetching poll'
             });
         }
-        if (User) {
+        if (poll) {
             return res.json({
                 'responseCode': '00',
-                'responseMessage': 'Successfully fetched users',
-                'User': User
+                'responseMessage': 'Successfully fetched poll',
+                'Poll': Poll
             });
         } return res.json({
             'responseCode': '02',
-            'responseMessage': 'No users in db'
+            'responseMessage': 'No poll in db'
         });
     });
 });
-
-
 
 module.exports = router;
 

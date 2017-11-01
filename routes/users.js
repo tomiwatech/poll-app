@@ -226,7 +226,7 @@ router.delete('/:id', function (req, res, next) {
     var id = req.params.id;
     console.log(id);
     UserService.deleteUser(id, function (err) {
-        if (err) {
+        if(err) {
             return res.json({
                 'responseCode': '03',
                 'responseMessage': 'Error deleting User'

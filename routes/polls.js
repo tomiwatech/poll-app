@@ -35,7 +35,7 @@ router.use(function (req, res, next) {
 
 router.post('/', function (req, res, next) {
     var data = req.body;
-    console.log(data.question);
+    console.log(data);
     PollService.addPoll(data, function (err, polls) {
         if (err) {
             return res.json({
@@ -65,79 +65,79 @@ router.post('/', function (req, res, next) {
 // ---------------------------------------------------------
 // 
 
-router.post('/authenticate', function (req, res, next) {
+// router.post('/authenticate', function (req, res, next) {
 
-    var data = req.body;
-    PollService.authenticateUser(data, function (err, user) {
-        if (err) throw err;
-        if (!user) {
-            res.json({
-                responseCode: "02",
-                responseMessage: 'Authentication failed. User not found.',
-            });
-        } else if (user) {
-            // check if username matches
-            if (user.password != req.body.password) {
-                res.json({
-                    responseCode: "03",
-                    responseMessage: 'Authentication failed. Password not found.',
-                });
-            } else {
-                // if user is found and password is right
-                // create a token
-                var token = jwt.sign({ data: user }, config.secret, {
-                    expiresIn: 1440 // expires in 24 hours
-                });
+//     var data = req.body;
+//     PollService.authenticateUser(data, function (err, user) {
+//         if (err) throw err;
+//         if (!user) {
+//             res.json({
+//                 responseCode: "02",
+//                 responseMessage: 'Authentication failed. User not found.',
+//             });
+//         } else if (user) {
+//             // check if username matches
+//             if (user.password != req.body.password) {
+//                 res.json({
+//                     responseCode: "03",
+//                     responseMessage: 'Authentication failed. Password not found.',
+//                 });
+//             } else {
+//                 // if user is found and password is right
+//                 // create a token
+//                 var token = jwt.sign({ data: user }, config.secret, {
+//                     expiresIn: 1440 // expires in 24 hours
+//                 });
 
-                // return the information including token as JSON
-                res.json({
-                    responseCode: "00",
-                    responseMessage: 'Authentication Successful',
-                    token: token,
-                    user:user
-                });
-            }
+//                 // return the information including token as JSON
+//                 res.json({
+//                     responseCode: "00",
+//                     responseMessage: 'Authentication Successful',
+//                     token: token,
+//                     user:user
+//                 });
+//             }
 
-        }
+//         }
 
-    })
+//     })
 
-});
+// });
 
 // ---------------------------------------------------------
 // route middleware to authenticate and check token
 // ---------------------------------------------------------
-router.use(function (req, res, next) {
+// router.use(function (req, res, next) {
 
-    // check header or url parameters or post parameters for token
-    var token = req.body.token || req.param('token') || req.headers['x-access-token'];
+//     // check header or url parameters or post parameters for token
+//     var token = req.body.token || req.param('token') || req.headers['x-access-token'];
 
-    // decode token
-    if (token) {
+//     // decode token
+//     if (token) {
 
-        // verifies secret and checks exp
-        jwt.verify(token, app.get('superSecret'), function (err, decoded) {
-            if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
-            } else {
-                // if everything is good, save to request for use in other routes
-                req.decoded = decoded;
-                next();
-            }
-        });
+//         // verifies secret and checks exp
+//         jwt.verify(token, app.get('superSecret'), function (err, decoded) {
+//             if (err) {
+//                 return res.json({ success: false, message: 'Failed to authenticate token.' });
+//             } else {
+//                 // if everything is good, save to request for use in other routes
+//                 req.decoded = decoded;
+//                 next();
+//             }
+//         });
 
-    } else {
+//     } else {
 
-        // if there is no token
-        // return an error
-        return res.status(403).send({
-            success: false,
-            message: 'No token provided.'
-        });
+//         // if there is no token
+//         // return an error
+//         return res.status(403).send({
+//             success: false,
+//             message: 'No token provided.'
+//         });
 
-    }
+//     }
 
-});
+// });
 
 
 
@@ -171,7 +171,7 @@ router.get('/', function (req, res, next) {
     });
 });
 
-//Find One
+//Find poll by id
 router.get('/:id', function (req, res, next) {
     var id = req.params.id;
     console.log(id);
@@ -179,18 +179,18 @@ router.get('/:id', function (req, res, next) {
         if (err){
             return res.json({
                 'responseCode': '03',
-                'responseMessage': 'Error fetching poll'
+                'responseMessage': 'Error fetching poll for user'
             });
         }
         if (poll) {
             return res.json({
                 'responseCode': '00',
-                'responseMessage': 'Successfully fetched poll',
-                'Poll': Poll
+                'responseMessage': 'Successfully fetched poll for user',
+                'Poll': poll
             });
         } return res.json({
             'responseCode': '02',
-            'responseMessage': 'No poll in db'
+            'responseMessage': 'No poll in db for user'
         });
     });
 });

@@ -11,6 +11,7 @@ var jwt = require('jsonwebtoken');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var poll = require('./routes/polls');
+var votes = require('./routes/votes');
 var config = require('./config');
 
 // connect to mongoDB with mongoose
@@ -45,6 +46,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/polls', poll);// poll route
+app.use('/votes',votes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -63,5 +65,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.listen(7777);
+console.log("app running on port 7777");
 
 module.exports = app;

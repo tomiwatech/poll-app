@@ -36,7 +36,8 @@ router.use(function (req, res, next) {
 router.post('/', function (req, res, next) {
     var data = req.body;
     console.log(data.username);
-    UserService.addUser(data, function (err, users) {
+    console.log("post data " + data);
+    UserService.addUser(data, function (err, user) {
         if (err) {
             return res.json({
                 'responseCode': '03',
@@ -44,7 +45,7 @@ router.post('/', function (req, res, next) {
             });
         }
 
-        if (users) {
+        if (user) {
             return res.json({
                 'responseCode': '00',
                 'responseMessage': 'Successfully added a User'
@@ -65,7 +66,6 @@ router.post('/', function (req, res, next) {
 // 
 
 router.post('/authenticate', function (req, res, next) {
-
     var data = req.body;
     UserService.authenticateUser(data, function (err, user) {
         if (err) throw err;
@@ -91,8 +91,8 @@ router.post('/authenticate', function (req, res, next) {
                 // return the information including token as JSON
                 res.json({
                     responseCode: "00",
-                    responseMessage: 'Authentication Successful',
-                    token: token,
+                    responseMessage: "Authentication Successful",
+                    token:token,
                     user:user
                 });
             }
@@ -117,14 +117,13 @@ router.use(function (req, res, next) {
         // verifies secret and checks exp
         jwt.verify(token, app.get('superSecret'), function (err, decoded) {
             if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
+                return res.json({ success: false, message: 'Failed to authenticate token.'});
             } else {
                 // if everything is good, save to request for use in other routes
                 req.decoded = decoded;
                 next();
             }
         });
-
     } else {
 
         // if there is no token
@@ -180,13 +179,15 @@ router.get('/:id', function (req, res, next) {
                 'responseMessage': 'Error fetching user'
             });
         }
-        if (User) {
+        if (users) {
             return res.json({
                 'responseCode': '00',
                 'responseMessage': 'Successfully fetched users',
-                'User': User
+                'User': users
             });
-        } return res.json({
+        }
+        
+        return res.json({
             'responseCode': '02',
             'responseMessage': 'No users in db'
         });

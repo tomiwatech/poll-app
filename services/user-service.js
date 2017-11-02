@@ -50,20 +50,20 @@ UserService.allUsers = function (next) {
     });
 }
 
-UserService.updateUser = function (userUser, next) {
+// UserService.updateUser = function (userUser, next) {
 
-    User.update({ "_id": userUser._id }, {
-        $set:
-        {
-            "UserName": userUser.UserName,
-            "UserPriority": userUser.UserPriority,
-            "UserStatus": userUser.UserStatus,
-            "UserDescription": userUser.UserDescription
-        }
-    }, function (err, User) {
-        return next(err, User);
-    })
-}
+//     User.update({ "_id": userUser._id }, {
+//         $set:
+//         {
+//             "UserName": userUser.UserName,
+//             "UserPriority": userUser.UserPriority,
+//             "UserStatus": userUser.UserStatus,
+//             "UserDescription": userUser.UserDescription
+//         }
+//     }, function (err, User) {
+//         return next(err, User);
+//     })
+// }
 
 
 // delete User with User._id

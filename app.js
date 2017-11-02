@@ -66,6 +66,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+// add this for local deployment
 app.listen(7777);
 console.log("app running on port 7777");
 
